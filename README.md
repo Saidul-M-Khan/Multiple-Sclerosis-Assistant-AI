@@ -75,7 +75,7 @@ The MS Assistant API uses:
 
 1. **OpenAI GPT-4o**: For natural language understanding and response generation
 2. **LangChain**: For document processing and retrieval
-3. **Chroma Vector Database**: For storing and retrieving relevant information
+3. **FAISS Vector Database**: For storing and retrieving relevant information
 4. **RAG (Retrieval Augmented Generation)**: To combine the power of retrieval and generation for more accurate responses
 
 ## Important Notes
