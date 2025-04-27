@@ -1,0 +1,47 @@
+{
+  "common_symptoms": [
+    {"name": "Fatigue", "description": "Extreme tiredness due to MS-related nerve damage and energy depletion."},
+    {"name": "Vision problems", "description": "Blurred vision, double vision, or loss of vision caused by optic nerve inflammation."},
+    {"name": "Numbness or tingling", "description": "Pins-and-needles sensations or loss of feeling in the face, arms, legs, or body."},
+    {"name": "Muscle weakness", "description": "Reduced strength and difficulty moving due to impaired nerve conduction."},
+    {"name": "Balance problems", "description": "Dizziness, vertigo, loss of coordination, and frequent falls."},
+    {"name": "Cognitive changes", "description": "Memory loss, slow information processing, poor judgment, and difficulty concentrating."},
+    {"name": "Pain", "description": "Neuropathic or musculoskeletal pain due to nerve or muscle dysfunction."},
+    {"name": "Mobility issues", "description": "Difficulty walking, foot drop, gait disturbances, and spasticity affecting mobility."},
+    {"name": "Bladder dysfunction", "description": "Urgency, frequency, incontinence, or urinary retention caused by disrupted nerve signals."},
+    {"name": "Bowel problems", "description": "Constipation, bowel incontinence, or difficulty with bowel movements."}
+  ],
+  "less_common_symptoms": [
+    {"name": "Speech difficulties", "description": "Slurred, slowed, or nasal-sounding speech due to impaired motor control."},
+    {"name": "Swallowing problems", "description": "Difficulty swallowing or choking due to muscle weakness (dysphagia)."},
+    {"name": "Sexual dysfunction", "description": "Reduced libido, erectile dysfunction, or anorgasmia caused by nerve damage."},
+    {"name": "Tremor", "description": "Involuntary shaking or trembling due to cerebellar or motor nerve damage."},
+    {"name": "Seizures", "description": "Rare but possible episodes of uncontrolled electrical brain activity."},
+    {"name": "Breathing problems", "description": "Shortness of breath, irregular breathing, or reduced lung function from muscle weakness."},
+    {"name": "Hearing loss", "description": "Rare auditory impairment from damage to the auditory nerves or brain pathways."},
+    {"name": "Mood changes", "description": "Depression, anxiety, mood swings, emotional instability, or pseudobulbar affect."},
+    {"name": "Burning or itching sensations", "description": "False burning or itching feelings caused by nerve dysfunction."},
+    {"name": "Sensory overload", "description": "Heightened sensitivity to sensory stimuli such as light, sound, or touch."},
+    {"name": "Tight band-like sensation (MS Hug)", "description": "Feeling of tightness or pressure around the torso due to muscle spasms."},
+    {"name": "Spasticity", "description": "Muscle stiffness and resistance to movement from nerve damage."},
+    {"name": "Muscle spasms and cramps", "description": "Painful involuntary muscle contractions."},
+    {"name": "Clumsiness", "description": "Frequent tripping or dropping objects due to motor coordination problems."},
+    {"name": "Restless legs syndrome", "description": "Urge to move legs with uncomfortable sensations, worse at night."},
+    {"name": "Heat sensitivity", "description": "Temporary worsening of symptoms in hot environments (Uhthoff's phenomenon)."},
+    {"name": "Cold sensitivity", "description": "Increased discomfort or stiffness in cold temperatures."},
+    {"name": "Posture problems", "description": "Poor posture and back pain due to muscle weakness or imbalance."},
+    {"name": "Deconditioning", "description": "Muscle wasting and fatigue from reduced activity."},
+    {"name": "Sleep disturbances", "description": "Difficulty sleeping, insomnia, or fragmented sleep."},
+    {"name": "Headaches", "description": "Migraine-like headaches triggered by MS-related changes."},
+    {"name": "Trigeminal neuralgia", "description": "Sharp, stabbing facial pain due to trigeminal nerve irritation."},
+    {"name": "Facial weakness", "description": "Drooping or difficulty moving parts of the face."},
+    {"name": "Hiccups", "description": "Persistent hiccups from diaphragm spasms caused by nerve dysfunction."},
+    {"name": "Hearing problems", "description": "Tinnitus or hearing loss caused by auditory nerve damage."}
+  ],
+  "symptom_patterns": [
+    {"name": "Relapsing-remitting", "description": "Periods of new or worsening symptoms followed by recovery."},
+    {"name": "Secondary progressive", "description": "Gradual worsening of symptoms after an initial relapsing phase."},
+    {"name": "Primary progressive", "description": "Steady progression of disability without early relapses or remissions."},
+    {"name": "Progressive-relapsing", "description": "Continuous disease progression with occasional acute relapses."}
+  ]
+}
