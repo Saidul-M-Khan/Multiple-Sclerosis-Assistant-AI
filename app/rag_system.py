@@ -165,9 +165,9 @@ def query_knowledge_base(user_email: str, query: str, collection_names: List[str
             continue
         
         try:
-            # Load the FAISS index
+            # Load the FAISS index with allow_dangerous_deserialization=True
             faiss_index_path = collection_info["vector_db_path"]
-            vectordb = FAISS.load_local(faiss_index_path, embeddings)
+            vectordb = FAISS.load_local(faiss_index_path, embeddings, allow_dangerous_deserialization=True)
             
             # Perform similarity search
             docs_with_scores = vectordb.similarity_search_with_score(query, k=top_k)
@@ -176,14 +176,15 @@ def query_knowledge_base(user_email: str, query: str, collection_names: List[str
             for doc, score in docs_with_scores:
                 # FAISS returns euclidean distance, convert to similarity score (closer to 1 is better)
                 # Normalize score to be between 0 and 1 (1 being the best match)
-                normalized_score = 1.0 / (1.0 + score)  # Convert distance to similarity
+                # Convert numpy.float32 to Python float
+                normalized_score = float(1.0 / (1.0 + score))  # Convert to Python float
                 
                 results.append({
                     "collection_name": collection_name,
                     "document_title": collection_info["document_title"],
                     "content": doc.page_content,
                     "metadata": doc.metadata,
-                    "score": normalized_score
+                    "score": normalized_score  # Now a regular Python float
                 })
         except Exception as e:
             print(f"Error querying collection {collection_name}: {str(e)}")
