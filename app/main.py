@@ -347,3 +347,87 @@ async def get_all_sessions(current_user=Depends(get_current_user), db=Depends(ge
         response_data["last_week"] = last_week_sessions
     
     return response_data
+
+# MS Symptom Analysis Endpoint with improved knowledge base integration
+@app.post("/analyze_ms_symptoms/", response_model=schemas.SymptomAnalysisResponse)
+async def analyze_ms_symptoms(
+    symptom_input: schemas.SymptomInput,
+    current_user=Depends(get_current_user),
+    db=Depends(get_db)
+):
+    """
+    Analyze MS symptoms using both personal knowledge base and GPT's built-in MS knowledge
+    """
+    user_email = current_user["email"]
+    
+    # Query the user's knowledge base with a more comprehensive approach
+    from .rag_system import query_knowledge_base
+    
+    # Use both the symptom text and some MS-related keywords to enhance retrieval
+    enhanced_query = f"{symptom_input.clinical_text} multiple sclerosis symptoms management treatment"
+    kb_results = query_knowledge_base(
+        user_email=user_email, 
+        query=enhanced_query, 
+        top_k=5  # Increase number of results
+    )
+    
+    # Force knowledge base usage for testing if needed
+    # from your test result, it seems the knowledge base flag is false
+    used_knowledge_base = len(kb_results) > 0
+    
+    # Extract and prepare context from knowledge base
+    user_context = ""
+    if used_knowledge_base:
+        context_items = []
+        for idx, item in enumerate(kb_results):
+            # Extract more content from each document
+            content = item['content']
+            context_items.append(
+                f"Document {idx+1} ({item['document_title']}): {content}"
+            )
+        user_context = "\n\n".join(context_items)
+    
+    # Pass the knowledge base context to the analysis function
+    result = MSHealthAI.analyze_symptoms(
+        symptom_text=symptom_input.clinical_text,
+        knowledge_base_context=user_context
+    )
+    
+    return {
+        "analysis": result["analysis"],
+        "used_knowledge_base": used_knowledge_base
+    }
+
+# Debug endpoint to check knowledge base retrieval
+@app.post("/debug_knowledge_base/")
+async def debug_knowledge_base(
+    symptom_input: schemas.SymptomInput,
+    current_user=Depends(get_current_user),
+    db=Depends(get_db)
+):
+    """
+    Debug endpoint to check what's being retrieved from the knowledge base
+    """
+    user_email = current_user["email"]
+    
+    # Get all available collections for this user
+    from .rag_system import get_user_collections
+    collections = get_user_collections(user_email)
+    
+    # Query the knowledge base
+    from .rag_system import query_knowledge_base
+    enhanced_query = f"{symptom_input.clinical_text} multiple sclerosis symptoms"
+    kb_results = query_knowledge_base(
+        user_email=user_email, 
+        query=enhanced_query, 
+        top_k=5
+    )
+    
+    # Return debug information
+    return {
+        "user_email": user_email,
+        "available_collections": collections,
+        "query_used": enhanced_query,
+        "knowledge_base_results": kb_results,
+        "results_count": len(kb_results)
+    }
