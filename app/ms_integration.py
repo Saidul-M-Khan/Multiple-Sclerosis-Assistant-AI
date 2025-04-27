@@ -246,66 +246,6 @@ class MSHealthAI:
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"Error processing document: {str(e)}")
 
-    # @staticmethod
-    # def analyze_symptoms(symptom_text: str):
-    #     """Analyze MS symptoms and provide tailored recommendations"""
-    #     try:
-    #         # Load current MS symptoms knowledge
-    #         ms_symptom_data = load_ms_symptoms()
-            
-    #         # Format symptoms data for the prompt
-    #         symptoms_info = []
-    #         for category, symptoms in ms_symptom_data.items():
-    #             symptoms_info.append(f"## {category.replace('_', ' ').title()}")
-    #             for symptom in symptoms:
-    #                 symptoms_info.append(f"- {symptom['name']}: {symptom['description']}")
-            
-    #         symptoms_context = "\n".join(symptoms_info)
-            
-    #         system_prompt = f"""
-    #         You are a compassionate MS support assistant specializing in symptom assessment. Your role is to:
-
-    #         1. Carefully analyze the person's described MS-related symptoms
-    #         2. Match their experiences with known MS symptoms
-    #         3. Identify which symptoms align with MS and which might need different attention
-    #         4. Provide thoughtful, evidence-based recommendations specific to MS management
-    #         5. Suggest coping strategies and self-care practices tailored to MS
-
-    #         Here is the current knowledge base of MS symptoms to reference:
-            
-    #         {symptoms_context}
-            
-    #         Structure your response in a warm, conversational manner that includes:
-
-    #         1. A gentle acknowledgment of their feelings and concerns
-    #         2. Identification of which described experiences match known MS symptoms
-    #         3. A thoughtful analysis of what might be happening (avoiding definitive diagnosis)
-    #         4. Practical, actionable suggestions for MS symptom management
-    #         5. Clear guidance on which symptoms warrant contacting their neurologist promptly
-    #         6. Encouragement to maintain regular contact with their MS care team
-    #         7. A compassionate closing note
-
-    #         Remember that this is supportive information based on limited text, not a clinical diagnosis. 
-    #         Be supportive, empathetic, and helpful while maintaining appropriate boundaries.
-    #         """
-            
-    #         response = client.chat.completions.create(
-    #             model="gpt-4o",
-    #             messages=[
-    #                 {"role": "system", "content": system_prompt},
-    #                 {"role": "user", "content": f"I've been experiencing these symptoms with my MS: '{symptom_text}'"}
-    #             ],
-    #             temperature=0.7,
-    #             max_tokens=800
-    #         )
-            
-    #         return {
-    #             "analysis": response.choices[0].message.content.strip()
-    #         }
-                
-    #     except Exception as e:
-    #         raise HTTPException(status_code=500, detail=f"Error analyzing MS symptoms: {str(e)}")
-    
     @staticmethod
     def analyze_symptoms(symptom_text: str, knowledge_base_context: str = None):
         """Analyze MS symptoms with explicit incorporation of user knowledge base content"""
@@ -346,8 +286,7 @@ class MSHealthAI:
                 
                 {knowledge_base_context}
                 
-                IMPORTANT: Incorporate insights from the user's knowledge base documents where relevant.
-                Explicitly mention when you're referencing information from their personal knowledge base.
+                IMPORTANT: Incorporate insights from the user's knowledge base documents where relevant. When referencing a document, include both the document number AND the document title in parentheses like this: "(Document 1: Journal of MS Research)" or "(Document 3: MS Treatment Guidelines)
                 """
             
             system_prompt += """
