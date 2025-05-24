@@ -1,25 +1,36 @@
-from pymongo import MongoClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
-# MongoDB configuration
-MONGODB_URL = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
-DATABASE_NAME = os.getenv("DATABASE_NAME")
+# Get database URL from environment variable
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:root@localhost:5432/ms_assistant")
 
-if not DATABASE_NAME:
-    raise ValueError("DATABASE_NAME is not set in the environment variables.")
+# Create engine with PostgreSQL
+engine = create_engine(
+    DATABASE_URL,
+    pool_pre_ping=True,  # Enable connection health checks
+    pool_recycle=300,    # Recycle connections after 5 minutes
+    pool_size=5,         # Set pool size
+    max_overflow=10      # Maximum number of connections that can be created beyond pool_size
+)
 
-# Initialize MongoDB client
-client = MongoClient(MONGODB_URL)
-db = client[DATABASE_NAME]
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Base = declarative_base()
 
-# Access specific collections
-chat_sessions = db["chat_sessions"]
-chat_history = db["chat_history"]
-
-# Function to get the database object
+# Dependency
 def get_db():
-    return db
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+def init_db():
+    """Initialize the database by creating all tables."""
+    from .models import Base
+    Base.metadata.create_all(bind=engine)
